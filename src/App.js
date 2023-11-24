@@ -10,6 +10,8 @@ function App() {
 const [Interest,setInterest] = useState(0);
 const [Rate,setRate] = useState(0);
 const [Year,setYear] = useState(0);
+const [isPrincipal,setisPrinciple] = useState(true);
+const[isRate,setisRate]  = useState(true);
 const handleSubmit= (e)=>{
   e.preventDefault();
   console.log("==Principle Amount");
@@ -28,6 +30,31 @@ function clearValues(){
   setRate(0)
   setYear(0)
 }
+const validate =(e)=>{
+  const {value,name}  = e.target;
+  console.log(name);
+  if (!!value.match(/^[0-9]+$/)){
+    if (name === 'Principle'){
+     setPrinciple(value);
+      setisPrinciple(true);
+    }
+  else if (name === 'Rate'){
+    setRate(value);
+    setisRate(true);
+  }
+}
+else{
+if (name ===   'Principle'){
+setPrinciple(value);
+setisPrinciple(false);
+  }
+
+  else if ( name === 'Rate'){
+    setRate(value);
+    setisRate(false);
+  }
+}
+}
   return (
     <div className ='d-flex justify-content-center align-items-center w-100 mt-5'
     style={{height:'70vh',}}>
@@ -41,12 +68,20 @@ function clearValues(){
       <form action="" className='mt-5' onSubmit={(e)=>handleSubmit(e)}>
         <div className="mt-5">
         <TextField  id="outlined-basic" label="Priciple Amount" variant="outlined" className='w-100'value={Principle} 
-        onChange={(e)=>setPrinciple(e.target.value)}/>
+        onChange={(e)=>validate(e)}/>
         </div>
+        {! isPrincipal &&
+        <div>
+          <p className='text-danger mt-0'> Invalid Input</p>
+        </div>}
         <div className="mt-3">
-        <TextField  id="outlined-basic" label="Rate Of Interest (pa)%" variant="outlined" className='w-100'value={Rate} 
-        onChange={(e=>setRate(e.target.value))}/>
+        <TextField name='Rate' id="outlined-basic" label="Rate Of Interest (pa)%" variant="outlined" className='w-100'value={Rate} 
+        onChange={(e)=>validate(e)}/>
         </div>
+        {! isRate &&
+        <div>
+          <p className='text-danger '> Invalid Input</p>
+        </div>}
         <div className="mt-3">
         <TextField  id="outlined-basic" label="Year(Yr)" variant="outlined" className='w-100'value={Year} 
          onChange={(e=>setYear(e.target.value))}/>
